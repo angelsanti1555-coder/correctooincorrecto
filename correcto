@@ -1,0 +1,27 @@
+section .data
+    ; === ZONA DE DATOS: Mensajes que se imprimirán ===
+    ; "db" = define bytes (cadena de texto)
+    ; "10" = salto de línea (LF) para que el cursor baje
+    msg_ok      db "Codigo correcto", 10
+    len_ok      equ $ - msg_ok        ; Calcula longitud automáticamente
+    
+    msg_err     db "Codigo incorrecto", 10
+    len_err     equ $ - msg_err
+
+section .text
+    global _start                     ; Punto de entrada obligatorio
+
+_start:
+    ; === FASE 1: CONFIGURACIÓN ===
+    ; Cargamos valores en registros para simular entrada de usuario
+    mov rax, 1234       ; rax = código maestro (fijo, como en base de datos)
+    mov rbx, 1234      ; rbx = código ingresado (cambiar para probar)
+    
+    ; === FASE 2: COMPARACIÓN ===
+    ; cmp NO modifica los registros, solo configura "flags" internos del CPU
+    cmp rax, rbx        ; CPU calcula: rax - rbx y guarda el resultado en flags
+                        ; Si son iguales → Flag ZF (Zero Flag) = 1
+                        ; Si son diferentes → Flag ZF = 0
+    
+    ; === FASE 3: DECISIÓN (BRANCHING) ===
+    ; je = "Jump if Equal": salta
